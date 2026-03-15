@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTPS Server</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 HTTPS Server</h1>
+            <p>Веб-сервер с поддержкой TLS</p>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="secure-badge">
+                <span class="material-icons">security</span>
+                Защищённое соединение
+            </div>
+            <h2>Добро пожаловать!</h2>
+            <p>
+                Вы подключились к HTTPS серверу. 
+                Все данные передаются в зашифрованном виде с использованием протокола TLS 1.2.
+            </p>
+            <div class="hero-buttons">
+                <a href="/settings" class="btn btn-primary">
+                    <span class="material-icons">settings</span>
+                    Панель управления
+                </a>
+            </div>
+        </div>
+
+        <!-- Info Cards -->
+        <div class="cards-grid">
+            <!-- Card 1: About -->
+            <div class="card">
+                <h2>
+                    <span class="material-icons">info</span>
+                    О сервере
+                </h2>
+                <p>
+                    Этот сервер предоставляет безопасное HTTPS соединение для ваших веб-приложений.
+                    Поддерживает CGI скрипты, настройку CORS и песочницу chroot.
+                </p>
+                <div class="feature-list">
+                    <div class="feature">
+                        <span class="material-icons">check_circle</span>
+                        <span>HTTPS/TLS</span>
+                    </div>
+                    <div class="feature">
+                        <span class="material-icons">check_circle</span>
+                        <span>CGI Support</span>
+                    </div>
+                    <div class="feature">
+                        <span class="material-icons">check_circle</span>
+                        <span>CORS</span>
+                    </div>
+                    <div class="feature">
+                        <span class="material-icons">check_circle</span>
+                        <span>Chroot</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Security -->
+            <div class="card">
+                <h2>
+                    <span class="material-icons">shield</span>
+                    Безопасность
+                </h2>
+                <p>
+                    Сервер использует современные стандарты шифрования для защиты ваших данных:
+                </p>
+                <ul>
+                    <li>SSL/TLS сертификаты</li>
+                    <li>Изоляция процессов (chroot)</li>
+                    <li>Запуск от непривилегированного пользователя</li>
+                    <li>Контроль размеров запросов</li>
+                    <li>Логирование событий</li>
+                </ul>
+            </div>
+
+            <!-- Card 3: Features -->
+            <div class="card">
+                <h2>
+                    <span class="material-icons">bolt</span>
+                    Возможности
+                </h2>
+                <ul>
+                    <li>Многопоточная обработка запросов</li>
+                    <li>Настройка CORS политик</li>
+                    <li>Поддержка CGI скриптов</li>
+                    <li>Гибкая конфигурация</li>
+                    <li>Веб-интерфейс управления</li>
+                    <li>Детальное логирование</li>
+                </ul>
+            </div>
+
+            <!-- Card 4: API -->
+            <div class="card">
+                <h2>
+                    <span class="material-icons">api</span>
+                    API Endpoints
+                </h2>
+                <p>Доступные эндпоинты сервера:</p>
+                <ul>
+                    <li><code>/</code> — Главная страница</li>
+                    <li><code>/settings</code> — Панель настроек</li>
+                    <li><code>/cgi-bin/</code> — CGI скрипты</li>
+                    <li><code>/cgi-bin/config.cgi</code> — API конфигурации</li>
+                </ul>
+            </div>
+
+            <!-- Card 5: Technology Stack -->
+            <div class="card">
+                <h2>
+                    <span class="material-icons">computer</span>
+                    Технологический стек
+                </h2>
+                <p>Сервер построен на современных технологиях:</p>
+                <ul>
+                    <li><strong>Backend:</strong> Чистый C (POSIX)</li>
+                    <li><strong>Оптимизация:</strong> GNU as (x86-32 ассемблер)</li>
+                    <li><strong>Компилятор:</strong> clang, as</li>
+                    <li><strong>Сетевой транспорт:</strong> mbedTLS 3.x</li>
+                    <li><strong>Маршрутизация:</strong> HTTP/CGI протоколы</li>
+                    <li><strong>Frontend:</strong> HTML5, CSS3, Vanilla JavaScript</li>
+                    <li><strong>Параллелизм:</strong> POSIX потоки (pthreads)</li>
+                </ul>
+            </div>
+
+            <!-- Card 6: Demos & Tools -->
+            <div class="card">
+                <h2>
+                    <span class="material-icons">toys</span>
+                    Демо и инструменты
+                </h2>
+                <p>Интерактивные примеры и тестирование:</p>
+                <div class="feature-list" style="margin-top: 16px;">
+                    <a href="/demos/calculator.html" class="feature" style="text-decoration: none; cursor: pointer;">
+                        <span class="material-icons">calculate</span>
+                        <span>Калькулятор</span>
+                    </a>
+                    <a href="/demos/animation.html" class="feature" style="text-decoration: none; cursor: pointer;">
+                        <span class="material-icons">animation</span>
+                        <span>Анимация</span>
+                    </a>
+                    <a href="/tools/stress-test.html" class="feature" style="text-decoration: none; cursor: pointer;">
+                        <span class="material-icons">speed</span>
+                        <span>Стресс-тест</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats">
+            <h2>
+                <span class="material-icons">analytics</span>
+                Статус сервера
+            </h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">Протокол</div>
+                    <div class="stat-value" id="protocol">HTTPS</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Порт</div>
+                    <div class="stat-value" id="port"></div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Статус</div>
+                    <div class="stat-value" id="server-status">✓</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+    </div>
+
+    <script src="/js/index.js"></script>
+</body>
+</html>

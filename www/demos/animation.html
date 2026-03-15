@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Демо анимаций и эффектов</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✨ Демо анимаций и эффектов</h1>
+            <p>Красивые анимации на CSS3 и JavaScript</p>
+        </div>
+
+        <div class="demo-grid">
+            <!-- Particle Animation -->
+            <div class="demo-card">
+                <h3>
+                    <span class="material-icons">cloud</span>
+                    Эффект частиц
+                </h3>
+                <div class="particle-container" id="particle-container">
+                    <button class="particle-btn" onclick="createParticles()">Создать</button>
+                </div>
+            </div>
+
+            <!-- Gradient Animation -->
+            <div class="demo-card">
+                <h3>
+                    <span class="material-icons">gradient</span>
+                    Плавный градиент
+                </h3>
+                <div class="gradient-box">
+                    Живой градиент
+                </div>
+            </div>
+
+            <!-- Progress Bars -->
+            <div class="demo-card">
+                <h3>
+                    <span class="material-icons">trending_up</span>
+                    Progress бары
+                </h3>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>HTML5</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>CSS3</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="animation-delay: 0.3s;"></div>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>JavaScript</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="animation-delay: 0.6s;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Elements -->
+            <div class="demo-card">
+                <h3>
+                    <span class="material-icons">animation</span>
+                    Плавающие элементы
+                </h3>
+                <div class="float-container">
+                    <div class="float-item">✓</div>
+                    <div class="float-item">◆</div>
+                    <div class="float-item">★</div>
+                </div>
+            </div>
+
+            <!-- Pulse Animation -->
+            <div class="demo-card">
+                <h3>
+                    <span class="material-icons">radio_button_checked</span>
+                    Пульсирующий эффект
+                </h3>
+                <div class="pulse-container">
+                    <div class="pulse-item"></div>
+                </div>
+            </div>
+
+            <!-- Rotating Shape -->
+            <div class="demo-card">
+                <h3>
+                    <span class="material-icons">autorenew</span>
+                    Вращающаяся фигура
+                </h3>
+                <div class="rotate-container">
+                    <div class="rotating-shape"></div>
+                </div>
+            </div>
+
+            <!-- Typing Effect -->
+            <div class="demo-card">
+                <h3>
+                    <span class="material-icons">code</span>
+                    Эффект печати
+                </h3>
+                <div class="typing-container">
+                    <div class="typing-text">Это красивый эффект печати текста...</div>
+                </div>
+            </div>
+
+            <!-- Color Animation -->
+            <div class="demo-card">
+                <h3>
+                    <span class="material-icons">palette</span>
+                    Смена цветов
+                </h3>
+                <div style="height: 150px; border-radius: 8px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); animation: colorShift 6s ease infinite;" id="color-box"></div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">Анимаций</div>
+                    <div class="stat-value" id="animation-count">8</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Эффектов</div>
+                    <div class="stat-value" id="effects-count">12+</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Статус</div>
+                    <div class="stat-value">✓</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/animation.js"></script>
+</body>
+</html>

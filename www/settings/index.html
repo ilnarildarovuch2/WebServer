@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Control Panel</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔒 Server Control Panel</h1>
+            <p>Управление конфигурацией HTTPS сервера</p>
+        </div>
+
+        <div class="cards-grid settings-grid">
+            <!-- Card 1: Basic Settings -->
+            <div class="card settings-card">
+                <h2>
+                    <span class="material-icons">settings</span>
+                    Основные настройки
+                </h2>
+
+                <div id="status-basic" class="status-message"></div>
+
+                <div class="form-group">
+                    <label for="port">Порт</label>
+                    <input type="number" id="port" placeholder="8443" min="1" max="65535">
+                </div>
+
+                <div class="form-group">
+                    <label for="threads">Количество потоков</label>
+                    <input type="number" id="threads" placeholder="4" min="1" max="128">
+                </div>
+
+                <div class="form-group">
+                    <label for="max_request_size">Максимальный размер запроса (байт)</label>
+                    <input type="number" id="max_request_size" placeholder="65536" min="1024">
+                </div>
+
+                <div class="form-group">
+                    <label for="enable_chroot">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="enable_chroot">
+                            <span>Использовать chroot песочницу</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveSection('basic')">
+                        <span class="material-icons">save</span>
+                        Сохранить
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetSection('basic')">
+                        <span class="material-icons">refresh</span>
+                        Сбросить
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card 2: SSL/TLS Settings -->
+            <div class="card settings-card">
+                <h2>
+                    <span class="material-icons">security</span>
+                    TLS сертификаты
+                </h2>
+
+                <div id="status-ssl" class="status-message"></div>
+
+                <div class="form-group">
+                    <label for="cert">Путь к сертификату</label>
+                    <input type="text" id="cert" placeholder="/etc/ssl/certs/server.crt">
+                </div>
+
+                <div class="form-group">
+                    <label for="key">Путь к приватному ключу</label>
+                    <input type="text" id="key" placeholder="/etc/ssl/private/server.key">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveSection('ssl')">
+                        <span class="material-icons">save</span>
+                        Сохранить
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetSection('ssl')">
+                        <span class="material-icons">refresh</span>
+                        Сбросить
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card 3: CGI Settings -->
+            <div class="card settings-card">
+                <h2>
+                    <span class="material-icons">code</span>
+                    Настройки CGI
+                </h2>
+
+                <div id="status-cgi" class="status-message"></div>
+
+                <div class="form-group">
+                    <label for="cgi_dir">Директория CGI скриптов</label>
+                    <input type="text" id="cgi_dir" placeholder="/var/cgi-bin">
+                </div>
+
+                <div class="form-group">
+                    <label for="cgi_prefix">Префикс CGI пути</label>
+                    <input type="text" id="cgi_prefix" placeholder="/cgi-bin/">
+                </div>
+
+                <div class="form-group">
+                    <label for="cgi_ext">Расширение при поиске CGI</label>
+                    <input type="text" id="cgi_ext" placeholder=".cgi">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveSection('cgi')">
+                        <span class="material-icons">save</span>
+                        Сохранить
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetSection('cgi')">
+                        <span class="material-icons">refresh</span>
+                        Сбросить
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card 4: CORS Settings -->
+            <div class="card settings-card">
+                <h2>
+                    <span class="material-icons">language</span>
+                    Настройки CORS
+                </h2>
+
+                <div id="status-cors" class="status-message"></div>
+
+                <div class="form-group">
+                    <label for="cors_enabled">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="cors_enabled">
+                            <span>Включить CORS</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="cors_allow_origin">Allow-Origin</label>
+                    <input type="text" id="cors_allow_origin" placeholder="*">
+                </div>
+
+                <div class="form-group">
+                    <label for="cors_allow_methods">Allow-Methods</label>
+                    <input type="text" id="cors_allow_methods" placeholder="GET, POST, OPTIONS">
+                </div>
+
+                <div class="form-group">
+                    <label for="cors_allow_headers">Allow-Headers</label>
+                    <input type="text" id="cors_allow_headers" placeholder="Content-Type, Authorization">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveSection('cors')">
+                        <span class="material-icons">save</span>
+                        Сохранить
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetSection('cors')">
+                        <span class="material-icons">refresh</span>
+                        Сбросить
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card 5: Advanced Settings -->
+            <div class="card settings-card">
+                <h2>
+                    <span class="material-icons">settings_suggest</span>
+                    Расширенные параметры
+                </h2>
+
+                <div id="status-advanced" class="status-message"></div>
+
+                <div class="form-group">
+                    <label for="error_404_page">Страница 404</label>
+                    <input type="text" id="error_404_page" placeholder="www/errors/404.html">
+                </div>
+
+                <div class="form-group">
+                    <label for="logging_ratelimit">Лимит логирования запросов (в окне)</label>
+                    <input type="number" id="logging_ratelimit" placeholder="100" min="0" max="10000">
+                </div>
+
+                <div class="form-group">
+                    <label for="logging_time_window">Временное окно логирования (сек)</label>
+                    <input type="number" id="logging_time_window" placeholder="60" min="1" max="3600">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveSection('advanced')">
+                        <span class="material-icons">save</span>
+                        Сохранить
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetSection('advanced')">
+                        <span class="material-icons">refresh</span>
+                        Сбросить
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card 6: Logging & Sandbox -->
+            <div class="card settings-card">
+                <h2>
+                    <span class="material-icons">description</span>
+                    Логирование и песочница
+                </h2>
+
+                <div id="status-log" class="status-message"></div>
+
+                <div class="form-group">
+                    <label for="log_file">Файл логов</label>
+                    <input type="text" id="log_file" placeholder="/var/log/server.log">
+                </div>
+
+                <div class="form-group">
+                    <label for="chroot_dir">Директория chroot</label>
+                    <input type="text" id="chroot_dir" placeholder="/var/jail">
+                </div>
+
+                <div class="form-group">
+                    <label for="user">Пользователь для запуска</label>
+                    <input type="text" id="user" placeholder="www-data">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="saveSection('log')">
+                        <span class="material-icons">save</span>
+                        Сохранить
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetSection('log')">
+                        <span class="material-icons">refresh</span>
+                        Сбросить
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Card -->
+        <div class="stats">
+            <h2>
+                <span class="material-icons">info</span>
+                Статус конфигурации
+            </h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">Загруженные параметры</div>
+                    <div class="stat-value" id="config-count">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Последнее обновление</div>
+                    <div class="stat-value" id="last-update" style="font-size: 1.2em;">—</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Статус сервера</div>
+                    <div class="stat-value" id="server-status" style="font-size: 1.2em;">✓</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/settings.js"></script>
+</body>
+</html>

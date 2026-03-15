@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Стресс-тест сервера</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Стресс-тест сервера</h1>
+            <p>Тестирование производительности HTTPS сервера</p>
+        </div>
+
+        <div class="stress-container">
+            <!-- Status Badge -->
+            <div id="status-badge" class="status-badge status-idle">
+                <span class="material-icons" style="font-size: 1.2em;">circle</span>
+                <span id="status-text">Готов к тестированию</span>
+            </div>
+
+            <!-- Control Section -->
+            <div class="control-section">
+                <div class="form-group">
+                    <label for="concurrent-requests">Одновременных запросов</label>
+                    <input type="number" id="concurrent-requests" value="10" min="1" max="100">
+                    <div class="tooltip">Количество параллельных запросов</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="total-requests">Всего запросов</label>
+                    <input type="number" id="total-requests" value="100" min="1" max="10000">
+                    <div class="tooltip">Общее количество запросов в тесте</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="test-duration">Продолжительность (сек)</label>
+                    <input type="number" id="test-duration" value="10" min="1" max="300">
+                    <div class="tooltip">Длительность теста (0 = неограниченно)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="test-endpoint">Эндпоинт</label>
+                    <select id="test-endpoint">
+                        <option value="/">/ (главная)</option>
+                        <option value="/cgi-bin/config.cgi?action=read">/cgi-bin/config.cgi</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Control Buttons -->
+            <div class="button-group">
+                <button id="start-btn" class="btn btn-primary" onclick="startStressTest()">
+                    <span class="material-icons">play_arrow</span>
+                    Начать тест
+                </button>
+                <button id="stop-btn" class="btn btn-danger" onclick="stopStressTest()" disabled>
+                    <span class="material-icons">stop</span>
+                    Остановить
+                </button>
+                <button class="btn btn-secondary" onclick="resetResults()">
+                    <span class="material-icons">refresh</span>
+                    Сбросить результаты
+                </button>
+            </div>
+
+            <!-- Progress -->
+            <div id="progress-section" class="progress-section" style="display: none;">
+                <div class="progress-label">
+                    <span>Прогресс: <span id="progress-text">0%</span></span>
+                    <span id="elapsed-time">0s</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Live Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Завершено</div>
+                    <div class="stat-value">
+                        <span id="completed-count">0</span>
+                        <span class="stat-unit">/ <span id="total-count">100</span></span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Успешно</div>
+                    <div class="stat-value" style="color: #4caf50;">
+                        <span id="success-count">0</span>
+                        <span class="stat-unit" style="color: rgba(255,255,255,0.8);">%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Ошибок</div>
+                    <div class="stat-value" style="color: #ff6b6b;">
+                        <span id="error-count">0</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">RPS</div>
+                    <div class="stat-value">
+                        <span id="rps-count">0</span>
+                        <span class="stat-unit">req/s</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Results -->
+            <div class="results-section">
+                <h3>
+                    <span class="material-icons">assessment</span>
+                    Подробные результаты
+                </h3>
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-label">Минимальное время</div>
+                        <div class="result-value"><span id="min-time">0</span><span style="font-size: 0.5em;">ms</span></div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">Максимальное время</div>
+                        <div class="result-value"><span id="max-time">0</span><span style="font-size: 0.5em;">ms</span></div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">Среднее время</div>
+                        <div class="result-value"><span id="avg-time">0</span><span style="font-size: 0.5em;">ms</span></div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-label">Пропускная способность</div>
+                        <div class="result-value"><span id="throughput">0</span><span style="font-size: 0.5em;">req/s</span></div>
+                    </div>
+                </div>
+
+                <div class="response-log">
+                    <div id="log-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/stress-test.js"></script>
+</body>
+</html>
