@@ -29,6 +29,11 @@
 #include <mbedtls/error.h>
 #include <mbedtls/build_info.h>
 
+// ISPC externs
+extern int find_ip_in_tracker(unsigned int target_ip, unsigned int ip_list[], int count, int *out_index);
+extern int normalize_path_slashes(char path[], int len);
+extern void transform_header_name(char name[], int len);
+
 #define BUFFER_SIZE 8192
 #define QUEUE_SIZE 1024
 #define MAX_HEADERS 64
@@ -83,14 +88,9 @@ int should_log_request(uint32_t ip) {
     pthread_mutex_lock(&ip_tracker_mutex);
     
     int entry = -1;
-    for (int i = 0; i < tracked_count; i++) {
-        if (ip_trackers[i].ip == ip) {
-            entry = i;
-            break;
-        }
-    }
+    int found = find_ip_in_tracker(ip, (unsigned int*)ip_trackers, tracked_count, &entry);
     
-    if (entry == -1) {
+    if (!found) {
         if (tracked_count < MAX_TRACKED_IPS) {
             entry = tracked_count++;
             ip_trackers[entry].ip = ip;
@@ -335,10 +335,7 @@ int safe_cgi_path(const char *url, char *out_path, size_t out_sz) {
 
     snprintf(out_path, out_sz, "%s/%s", g_cfg.cgi_dir, canonical);
     
-    // Remove duplicate slashes
-    char *p = out_path;
-    while ((p = strstr(p, "//")) != NULL)
-        memmove(p, p+1, strlen(p));
+    normalize_path_slashes(out_path, strlen(out_path));
     
     return 1;
 }
@@ -435,10 +432,7 @@ void serve_cgi(mbedtls_ssl_context *ssl, const char *method, const char *url,
                 while (*hdr_value == ' ') hdr_value++;
                 char env_name[256];
                 snprintf(env_name, sizeof(env_name), "HTTP_%s", hdr_name);
-                for (char *p = env_name; *p; p++) {
-                    if (*p == '-') *p = '_';
-                    else *p = toupper(*p);
-                }
+                transform_header_name(env_name, strlen(env_name));
                 setenv(env_name, hdr_value, 1);
             }
             line = strtok(NULL, "\r\n");
@@ -837,9 +831,7 @@ void handle_connection(int client_fd, struct sockaddr_in client_addr) {
             else
                 snprintf(path, sizeof(path) - 1, "www/%s", url + 1);
 
-            char *p = path;
-            while ((p = strstr(p, "//")) != NULL)
-                memmove(p, p + 1, strlen(p));
+            normalize_path_slashes(path, strlen(path));
 
             struct stat st;
             if (stat(path, &st) == 0 && S_ISDIR(st.st_mode)) {

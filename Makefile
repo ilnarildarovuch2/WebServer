@@ -1,7 +1,9 @@
 CC         = clang
 AS         = as
+ISPC       = ispc
 CFLAGS     = -w -O2 -std=c99 -D_GNU_SOURCE -fPIC
 ASFLAGS    = --64
+ISPC_FLAGS = -O2 --target=avx
 LDFLAGS    = -lpthread -lmbedtls -lmbedcrypto -lmbedx509 -no-pie
 DEBUG_CFLAGS = -g -O0 -DDEBUG
 
@@ -11,8 +13,9 @@ SOURCES    = server.c
 ASM_SOURCE = server.asm
 ASM_OBJECT = server_asm.o
 C_OBJECT   = server.o
+ISPC_OBJECT = server_optimize.o
 
-.PHONY: all clean debug release help install
+.PHONY: all clean debug release help
 
 all: release
 
@@ -22,7 +25,7 @@ release: $(TARGET_BIN) $(TARGET_CGI)
 debug: CFLAGS += $(DEBUG_CFLAGS)
 debug: $(TARGET_BIN) $(TARGET_CGI)
 
-$(TARGET_BIN): $(C_OBJECT) $(ASM_OBJECT)
+$(TARGET_BIN): $(C_OBJECT) $(ASM_OBJECT) $(ISPC_OBJECT)
 	@echo "[LD] Linking $@"
 	@$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
 	@echo "[✓] Binary: $@"
@@ -41,9 +44,13 @@ $(ASM_OBJECT): $(ASM_SOURCE)
 	@echo "[AS] Assembling $<"
 	@$(AS) $(ASFLAGS) $< -o $@
 
+$(ISPC_OBJECT): server.ispc
+	@echo "[ISPC] Compiling $<"
+	@$(ISPC) $(ISPC_FLAGS) -o $@ $<
+
 clean:
 	@echo "[CLEAN] Removing build artifacts..."
-	@rm -f $(C_OBJECT) $(ASM_OBJECT) $(TARGET_BIN) $(TARGET_CGI) config.o server.log
+	@rm -f $(C_OBJECT) $(ASM_OBJECT) $(ISPC_OBJECT) $(TARGET_BIN) $(TARGET_CGI) config.o server.log
 	@echo "[✓] Clean complete"
 
 distclean: clean
@@ -52,11 +59,11 @@ distclean: clean
 	@echo "[✓] Distribution clean complete"
 
 help:
-	@echo "HTTPS Server Build System (clang + GNU as)"
-	@echo "========================================="
+	@echo "HTTPS Server Build System (clang + GNU as + ISPC)"
+	@echo "================================================"
 	@echo "Targets:"
 	@echo "  make all          - Build release version (default)"
-	@echo "  make release      - Build optimized release (x86-64)"
+	@echo "  make release      - Build optimized release (x86-64 + SIMD)"
 	@echo "  make debug        - Build with debug symbols (-g -O0)"
 	@echo "  make clean        - Remove build artifacts"
 	@echo "  make distclean    - Remove all generated files including logs"
@@ -65,22 +72,7 @@ help:
 	@echo "Environment:"
 	@echo "  CC         = $(CC)"
 	@echo "  AS         = $(AS)"
+	@echo "  ISPC       = $(ISPC)"
 	@echo "  CFLAGS     = $(CFLAGS)"
-	@echo "  ASFLAGS    = $(ASFLAGS)"
+	@echo "  ISPC_FLAGS = $(ISPC_FLAGS)"
 	@echo "  LDFLAGS    = $(LDFLAGS)"
-	@echo ""
-	@echo "Build artifacts:"
-	@echo "  Binary: $(TARGET_BIN)"
-	@echo "  CGI:    $(TARGET_CGI)"
-
-.PHONY: print-info
-print-info:
-	@echo "=== Build Configuration ==="
-	@echo "Compiler: $(CC)"
-	@echo "Version: $$($(CC) --version | head -1)"
-	@echo "Assembler: $(AS)"
-	@echo "CFLAGS: $(CFLAGS)"
-	@echo "ASFLAGS: $(ASFLAGS)"
-	@echo "LDFLAGS: $(LDFLAGS)"
-	@echo ""
-	@$(CC) --version

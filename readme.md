@@ -10,7 +10,9 @@
 
 ### Backend (Серверная часть)
 * **Язык:** C (стандарт C99, POSIX)
-* **Оптимизация:** GNU Assembler (x86-64) для функций сетевого ввода-вывода и парсинга заголовков
+* **Оптимизация:** 
+  * GNU Assembler (x86-64) — низкоуровневый сетевой ввод-вывод и парсинг
+  * ISPC (Intel SPMD Program Compiler) — SIMD-оптимизация строковых операций и обработки заголовков
 * **Криптография:** mbedTLS (TLS 1.2, SSL handshake)
 * **Многопоточность:** POSIX Threads (pthreads) — пул потоков для обработки соединений
 * **Безопасность:**
@@ -35,12 +37,13 @@
 
 ```bash
 sudo apt-get update
-sudo apt-get install clang make libmbedtls-dev libmbedcrypto-dev libmbedx509-dev openssl
+sudo apt-get install clang make libmbedtls-dev libmbedcrypto-dev libmbedx509-dev openssl ispc
 ```
 
 * **Компилятор:** `clang`
 * **Ассемблер:** `as` (GNU as)
 * **Библиотеки:** `mbedtls`, `pthread`
+* **ISPC:** для SIMD-оптимизаций (`server.ispc`)
 * **ОС:** FreeBSD, Linux (требуется для системных вызовов `chroot`, `setuid`, `fork`)
 
 ---
